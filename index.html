@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COLLIDE — Where Brands Meet Creators</title>
+    <script async src="https://tally.so/widgets/embed.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        :root {
+            --ink: #0a0a0a;
+            --paper: #faf8f3;
+            --accent: #ff3e00;
+            --secondary: #4a00ff;
+            --tertiary: #00ff88;
+            --gradient: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: var(--paper);
+            color: var(--ink);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(0,0,0,.03) 35px, rgba(0,0,0,.03) 70px);
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            z-index: 1000;
+            background: var(--paper);
+            border-bottom: 2px solid var(--ink);
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5rem;
+            letter-spacing: 0.1em;
+            color: var(--ink);
+            text-decoration: none;
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '●';
+            color: var(--accent);
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .nav-cta {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 0.8rem 2rem;
+            border: 2px solid var(--ink);
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-cta:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 5px 5px 0 var(--accent);
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 6rem 2rem 2rem;
+        }
+        
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(4rem, 12vw, 10rem);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-title .line1 {
+            display: block;
+            position: relative;
+        }
+        
+        .hero-title .line2 {
+            display: block;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: rotate(-2deg);
+            margin: 0.1em 0;
+            animation: glitch 3s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: rotate(-2deg) translateX(0); }
+            20% { transform: rotate(-2deg) translateX(-2px); }
+            40% { transform: rotate(-2deg) translateX(2px); }
+            60% { transform: rotate(-2deg) translateX(-1px); }
+            80% { transform: rotate(-2deg) translateX(1px); }
+        }
+        
+        .hero-title .line3 {
+            display: block;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin: 2rem auto;
+            max-width: 600px;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+            line-height: 1.6;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* Floating shapes */
+        .shape {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--tertiary);
+            border-radius: 50%;
+            top: 10%;
+            left: -150px;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--secondary);
+            top: 60%;
+            right: -100px;
+            opacity: 0.1;
+            transform: rotate(45deg);
+            animation: float 25s infinite ease-in-out reverse;
+        }
+        
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--accent);
+            bottom: 20%;
+            left: 10%;
+            opacity: 0.08;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: spin 30s infinite linear;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-30px) translateX(20px); }
+            50% { transform: translateY(20px) translateX(-10px); }
+            75% { transform: translateY(-20px) translateX(-20px); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            margin: 3rem 0;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-btn {
+            padding: 1.2rem 3rem;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 0.05em;
+            border: 3px solid var(--ink);
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+        
+        .cta-btn.primary {
+            background: var(--ink);
+            color: var(--paper);
+        }
+        
+        .cta-btn.primary:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 8px 8px 0 var(--accent);
+        }
+        
+        .cta-btn.secondary:hover {
+            transform: scale(1.05) rotate(-2deg);
+            background: var(--tertiary);
+            border-color: var(--tertiary);
+        }
+        
+        /* How it Works Section */
+        .how-it-works {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(3rem, 8vw, 6rem);
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+        }
+        
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+        
+        .process-card {
+            background: var(--paper);
+            border: 2px solid var(--ink);
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .process-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 0;
+        }
+        
+        .process-card:hover::before {
+            transform: translateY(0);
+        }
+        
+        .process-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 10px 10px 0 var(--ink);
+        }
+        
+        .process-card:hover * {
+            color: var(--paper);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .process-number {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 4rem;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .process-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+        }
+        
+        .process-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+        
+        /* Dual Benefits Section */
+        .benefits {
+            padding: 8rem 2rem;
+            background: var(--ink);
+            color: var(--paper);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefits::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 50px,
+                rgba(255,255,255,0.02) 50px,
+                rgba(255,255,255,0.02) 100px
+            );
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(100px); }
+        }
+        
+        .benefits-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+        
+        .benefit-column {
+            position: relative;
+        }
+        
+        .benefit-label {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            opacity: 0.6;
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .benefit-title.brands::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .benefit-title.creators::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--tertiary);
+        }
+        
+        .benefit-list {
+            list-style: none;
+        }
+        
+        .benefit-item {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.6;
+            transition: transform 0.3s ease;
+        }
+        
+        .benefit-item:hover {
+            transform: translateX(10px);
+        }
+        
+        .benefit-item::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        .creators-benefits .benefit-item::before {
+            color: var(--tertiary);
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--paper);
+            border-top: 2px solid var(--ink);
+        }
+        
+        .footer-text {
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(3rem, 15vw, 6rem);
+            }
+            
+            .process-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 2rem;
+            }
+            
+            nav {
+                padding: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">COLLIDE</a>
+            <button class="nav-cta" data-tally-open="QKoJAl" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">START COLLIDING</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="line1">Where Brands</span>
+                <span class="line2">COLLIDE</span>
+                <span class="line3">With Creators</span>
+            </h1>
+            <p class="hero-subtitle">
+                The curated marketplace where authentic partnerships begin. 
+                No algorithms, no bidding wars — just perfect matches waiting to happen.
+            </p>
+            <div class="cta-section">
+                <div class="cta-buttons">
+                    <button class="cta-btn primary" data-tally-open="QKoJAl" data-tally-emoji-text="🚀" data-tally-emoji-animation="wave">I'M A BRAND</button>
+                    <button class="cta-btn secondary" data-tally-open="vGXO24" data-tally-emoji-text="✨" data-tally-emoji-animation="wave">I'M A CREATOR</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="section-title">How the Magic Happens</h2>
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-number">01</div>
+                <h3 class="process-title">Tell Us Your Story</h3>
+                <p class="process-description">
+                    Brands share their vision and values. Creators showcase their unique voice and audience. 
+                    We learn what makes you extraordinary.
+                </p>
+            </div>
+            <div class="process-card">
+                <div class="process-number">02</div>
+                <h3 class="process-title">We Connect the Dots</h3>
+                <p class="process-description">
+                    Our curation team hand-picks partnerships based on authentic alignment — 
+                    not just numbers, but genuine brand-creator chemistry.
+                </p>
+            </div>
+            <div class="process-card">
+                <div class="process-number">03</div>
+                <h3 class="process-title">Collaborate & Create</h3>
+                <p class="process-description">
+                    Start conversations that matter. Build campaigns that resonate. 
+                    Create content that converts. All on your terms.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="benefits-container">
+            <h2 class="section-title" style="color: var(--paper);">Built Different for Both Sides</h2>
+            <div class="benefits-grid">
+                <div class="benefit-column">
+                    <div class="benefit-label">FOR</div>
+                    <h3 class="benefit-title brands">BRANDS</h3>
+                    <ul class="benefit-list">
+                        <li class="benefit-item">Discover creators you'd never find through hashtags</li>
+                        <li class="benefit-item">Skip the influencer marketing middleman markup</li>
+                        <li class="benefit-item">Get matched based on values, not just vanity metrics</li>
+                        <li class="benefit-item">Access creators across every platform and niche</li>
+                        <li class="benefit-item">Build lasting partnerships, not one-off transactions</li>
+                    </ul>
+                </div>
+                <div class="benefit-column creators-benefits">
+                    <div class="benefit-label">FOR</div>
+                    <h3 class="benefit-title creators">CREATORS</h3>
+                    <ul class="benefit-list">
+                        <li class="benefit-item">Get discovered by brands that align with your content</li>
+                        <li class="benefit-item">No more cold DMs or sketchy sponsorship emails</li>
+                        <li class="benefit-item">Fair compensation without the agency fees</li>
+                        <li class="benefit-item">Work with brands that respect your creative vision</li>
+                        <li class="benefit-item">Grow beyond your current platform limitations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© 2024 COLLIDE — Making magic happen, one partnership at a time</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for any future anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add intersection observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe process cards
+        document.querySelectorAll('.process-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
