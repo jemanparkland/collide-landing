@@ -580,7 +580,7 @@
     <nav>
         <div class="nav-container">
             <a href="#" class="logo">COLLIDE</a>
-            <a href="https://tally.so/r/QKoJAl?transparentBackground=1&formEventsForwarding=1" target="_blank" class="nav-cta">START COLLIDING</a>
+            <a href="#tally-open=QKoJAl&tally-emoji-text=👋&tally-emoji-animation=wave&tally-form-events-forwarding=1" class="nav-cta">START COLLIDING</a>
         </div>
     </nav>
 
@@ -602,8 +602,8 @@
             </p>
             <div class="cta-section">
                 <div class="cta-buttons">
-                    <a href="https://tally.so/r/QKoJAl?transparentBackground=1&formEventsForwarding=1" target="_blank" class="cta-btn primary">I'M A BRAND</a>
-                    <a href="https://tally.so/r/vGXO24?transparentBackground=1&formEventsForwarding=1" target="_blank" class="cta-btn secondary">I'M A CREATOR</a>
+                    <a href="#tally-open=QKoJAl&tally-emoji-text=👋&tally-emoji-animation=wave&tally-form-events-forwarding=1" class="cta-btn primary">I'M A BRAND</a>
+                    <a href="#tally-open=vGXO24&tally-emoji-text=👋&tally-emoji-animation=wave&tally-form-events-forwarding=1" class="cta-btn secondary">I'M A CREATOR</a>
                 </div>
             </div>
         </div>
@@ -718,11 +718,11 @@
         // Track form button clicks for Google Analytics
         document.addEventListener('DOMContentLoaded', function() {
             // Track brand form clicks (START COLLIDING and I'M A BRAND buttons)
-            document.querySelectorAll('a[href*="QKoJAl"]').forEach(function(link) {
+            document.querySelectorAll('a[href*="tally-open=QKoJAl"]').forEach(function(link) {
                 link.addEventListener('click', function() {
                     gtag('event', 'form_click', {
                         'event_category': 'engagement',
-                        'event_label': 'brand_form',
+                        'event_label': 'brand_form_modal',
                         'form_type': 'brand',
                         'button_text': this.textContent.trim()
                     });
@@ -730,11 +730,11 @@
             });
             
             // Track creator form clicks (I'M A CREATOR button)
-            document.querySelectorAll('a[href*="vGXO24"]').forEach(function(link) {
+            document.querySelectorAll('a[href*="tally-open=vGXO24"]').forEach(function(link) {
                 link.addEventListener('click', function() {
                     gtag('event', 'form_click', {
                         'event_category': 'engagement',
-                        'event_label': 'creator_form',
+                        'event_label': 'creator_form_modal',
                         'form_type': 'creator',
                         'button_text': this.textContent.trim()
                     });
